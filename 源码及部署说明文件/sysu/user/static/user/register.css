@@ -1,0 +1,72 @@
+body {
+    background-image:url(bg.png);
+}
+
+.containter {
+    position:relative;
+    top:200px;
+    right:190px
+}
+
+div.panel {
+    border-style:none;
+    border-radius:20px;
+    height:400px;
+    width:300px;
+}
+
+.panel-body {
+    position:relative;
+    bottom:15px;
+}
+
+.containter .panel-heading {
+    background-color:#10c2f8;
+    color:white;
+    border-radius:70px;
+    width:100px;
+    position:relative;
+    left:180px;
+    bottom:55px;
+}
+
+h3.panel-title {
+    position:relative;
+    left:18px;
+}
+
+div.panel-body {
+    color:#00b7ee;
+}
+
+input#id_username.form-control {
+    border-radius:20px;
+    border-color:#00b7ee;
+}
+
+input#id_email.form-control {
+    border-radius:20px;
+    border-color:#00b7ee;
+}
+
+input#id_password.form-control {
+    border-radius:20px;
+    border-color:#00b7ee;
+}
+
+input#id_password_again.form-control {
+    border-radius:20px;
+    border-color:#00b7ee;
+}
+
+input.btn {
+    position:relative;
+    right:40px;
+    border-radius:20px;
+    width:200px;
+    top:20px;
+}
+
+.panel-default {
+    box-shadow: 3px 2px 50px #888888;
+}
