@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% block title %}中山大学教学平台{% endblock %}
+{% block nav_blog_active %}active{% endblock %}
+
+{% load staticfiles %}
+{% load comment_tags %}
+{% load likes_tags %}
+
+{% block header_extends %}
+    <script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <link rel="stylesheet" href="{% static 'blog/blog_1.css' %}">
+{% endblock %}
+
+{# 页面内容 #}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{% block blog_list_title %}问题列表{% endblock %}</div>
+                    <div class="panel-body">
+                        {% for blog in blogs %}
+                            <div class="blog">
+                                <h3><a href="{% url 'blog_detail' blog.pk %}">{{ blog.title }}</a></h3>
+                                <div class="blog-info">
+                                    <span class="glyphicon glyphicon-tag"></span> <a href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a>&nbsp;&nbsp;
+                                    <span class="glyphicon glyphicon-time"></span> {{ blog.created_time|date:"Y-m-d" }}&nbsp;&nbsp;
+                                    阅读({{ blog.get_read_num }})&nbsp;&nbsp;
+                                    评论({% get_comment_count blog %})&nbsp;&nbsp;
+                                    点赞({% get_like_count blog %})
+                                </div>
+                                <div class = "paragraph">{{ blog.content|striptags|truncatechars:120 }}</div>
+                            </div>
+                        {% empty %}
+                            <div class="blog">
+                                <h3>暂无问题，敬请期待</h3>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="publish_container">
+                    <div class="publish center-block">
+                        {% if user.is_authenticated %}
+                            <form id="blog_form" action="{% url 'update_blog' %}" method="POST">
+                                <input name="title" type="text" class = "que_title">
+                                <textarea  name="content" type="text"></textarea>
+
+                                <script type="text/javascript">
+                                        CKEDITOR.replace( 'content' , {uiColor: '#c6d3d3'});
+                                </script>
+                                
+                                <select name="blog_type" class="form-control">
+                                    <option>程序设计</option>
+                                    <option>高等数学</option>
+                                    <option>系统分析与设计</option>
+                                    <option>线性代数</option>
+                                    <option>数字电路</option>
+                                </select>
+                                <input type="submit" value="发布" class="btn btn-primary pull-right">
+                                <!-- <a onclick="$('blog_form').submit"  value="发布" class="btn btn-primary pull-right"></a>  -->
+                            </form>
+                        {% else %}
+                            您尚未登录，登录之后方可评论~ 
+                            <a class="btn btn-primary" href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
+                            <span> or </span>
+                            <a class="btn btn-danger" href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="paginator">
+                    <ul class="pagination">
+                        {# 上一页 #}
+                        <li>
+                            {% if page_of_blogs.has_previous %}
+                                <a href="?page={{ page_of_blogs.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&laquo;</span>
+                            {% endif %}
+                        </li>
+                        {# 全部页码 #}
+                        {% for page_num in page_range %}
+                            {% if page_num == page_of_blogs.number %}
+                                <li class="active"><span>{{ page_num }}</span></li>
+                            {% else %}
+                                {% if page_num == '...' %}
+                                    <li><span>{{ page_num }}</span></li>
+                                {% else %}
+                                    <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {# 下一页 #}
+                        <li>
+                            {% if page_of_blogs.has_next %}
+                                <a href="?page={{ page_of_blogs.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&raquo;</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                    <p>
+                        共有{{ page_of_blogs.paginator.count }}个问题，
+                        当前第{{ page_of_blogs.number }}页，共{{ page_of_blogs.paginator.num_pages }}页
+                    </p>
+                </div>
+            </div>
+            <div class="hidden-xs col-sm-4 col-md-3 col-lg-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">问题分类</div>
+                    <div class="panel-body">
+                        <ul class="blog-types">
+                            {% for blog_type in blog_types %}
+                                <li>
+                                    <a href="{% url 'blogs_with_type' blog_type.pk %}">
+                                        {{ blog_type.type_name }} ({{ blog_type.blog_count }})
+                                    </a>
+                                </li>
+                            {% empty %}
+                                <li>暂无分类</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">日期归档</div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for blog_date, blog_count in blog_dates.items %}
+                                <li>
+                                    <a href="{% url 'blogs_with_date' blog_date.year blog_date.month %}">
+                                        {{ blog_date|date:"Y年m月" }} ({{ blog_count }})
+                                    </a>                                    
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script_extends %}
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript">
+
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+
+    $("#blog_form").submit(function(){
+        // 判断是否为空
+        $("#blog_error").text('');
+        if(CKEDITOR.instances['content'].document.getBody().getText().trim()==''){
+            $("#blog_error").text('内容不能为空');
+            return false;
+        }
+
+        // 更新数据到    
+        CKEDITOR.instances['content'].updateElement();
+        
+        // 异步提交
+        $.ajax({
+            url: "{% url 'update_blog' %}",
+            type: 'POST',
+            data: $(this).serialize(),
+            cache: false,
+            success: function(data){
+                console.log(data);
+                if(data['status']=="SUCCESS"){
+                    // 清空编辑框的内容
+                    CKEDITOR.instances['content'].setData('');
+                    //刷新页面
+                    window.location.reload();
+                }else{
+                    // 显示错误信息
+                    $("#blog_error").text(data['message']);
+                }                    
+            },
+            error: function(xhr){
+                // 显示错误信息
+                console.log("WTF!!!!!!!!!!!!!!!");
+                alert(xhr.status + ": " + xhr.responseText);
+                console.log(xhr);
+            }
+        });
+        return false;
+    });
+    </script>
+{% endblock %}
