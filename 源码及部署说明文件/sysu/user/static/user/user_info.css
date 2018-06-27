@@ -1,0 +1,22 @@
+body {
+    background-image:url(info_bg.png);
+}
+
+div.col-xs-10.col-xs-offset-1 {
+    background-color:#2a4a81;
+    width:250px;
+    height:250px;
+    color:white;
+    position:relative;
+    left:367px;
+    top:112px;
+    box-shadow:1px 1px 10px #464343;
+    font-size:17px;
+    font-weight:300;
+    padding-left:19px;
+    padding-top:5px;
+}
+
+a {
+    color:#e4ba96;
+}
