@@ -1,0 +1,64 @@
+h3.home-content {
+    font-size: 26px;
+    text-align: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    color:#33ccff;
+    background-color:white;
+    height:60px;
+    width:460px;
+    padding:20px;
+    position:absolute;
+    left:200px;
+    box-shadow: 1px 1px 5px #888888;
+    
+}
+
+div#container {
+    margin: 0 auto;
+    height: 20em;
+    min-width: 20em;
+    max-width: 30em;
+    position:absolute;
+    left:800px;
+}
+
+div.hot-data {
+    margin:0em;
+    position:relative;
+    top:315px;
+    background-color:#e8f3f7;
+    box-shadow: 1px 1px 30px #a9a2a2;
+    height:150px;
+}
+
+
+div.hot-data h3 {
+    position:relative;
+    text-align: center;
+    width:150px;
+    height:80px;
+    padding:30px;
+    font-size:14px;
+    color:#f95477;
+    padding-right:5px;
+    left:260px;
+    margin:0px;
+}
+
+div.hot-data ul {
+    position:relative;
+    left:850px;
+    bottom:68px;
+    color:#2a4980;
+    padding:15px;
+    //background-color:#e8f3f7;
+    width:200px;
+    margin:0em;
+  
+
+}
+
+div.a-2 {
+    background-color:white;
+}
