@@ -1,5 +1,6 @@
 # sysu中山大学教学平台
-
+![Python](https://img.shields.io/badge/Python-3.x-519dd9.svg)
+![Django](https://img.shields.io/badge/Django-2.x-519dd9.svg)
 ## 网页本地部署：
 #### 1.一键安装库
 进入requirements.txt所在的目录，执行命令：
@@ -12,7 +13,7 @@
 #### 3.在浏览器输入：localhost:8000/即可进入网页    
 
 ## 线上网页地址：
-tgxbenjamin.pythonanywhere.com
+https://tgxbenjamin.pythonanywhere.com
 
 
 
@@ -20,7 +21,7 @@ tgxbenjamin.pythonanywhere.com
 15332014田桂雄   
 15331285孙小旋   
 15331254彭一峰   
-15331268邵柏卿     
-15331279苏菲     
+15331268邵柏卿         
 14331072高炜东     
 14331023陈举平   
+15331279苏菲 
