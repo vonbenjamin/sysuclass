@@ -1,5 +1,5 @@
 # sysu中山大学教学平台 <img src="https://github.com/vonbenjamin/hello-world/blob/master/sysu.jpg" alt="图片说明" width="110" height="100" align='right'>
-![final](https://img.shields.io/badge/未完成-non--final-red.svg)
+![final](https://img.shields.io/badge/完成-final-green.svg)
 ![Python](https://img.shields.io/badge/Python-3.x-519dd9.svg)
 ![Django](https://img.shields.io/badge/Django-2.x-519dd9.svg)
 ## 网页本地部署：
